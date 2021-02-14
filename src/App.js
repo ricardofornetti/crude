@@ -19,6 +19,10 @@ function App() {
       setTasks([...tasks, newTask])
     setTask("")
   }
+    const deleteTask = (id) => {
+      const filteredTask = tasks.filter(task => task.id !== id)
+      setTasks(filteredTask)
+  }
 
   return (
     <div className="container mt-10">
@@ -27,17 +31,26 @@ function App() {
       <div className="row">
        <div className="col-8">
         <h4 className="text-center">Lista de Tareas</h4>
-        <ul lassName="list-gruop">
+        {<ul className="list-gruop">
         {
           tasks.map ((task) => (
             <li className="list-gruop-item" key={task.id}>
+              <hr/>
             <span className="lead">{task.name} </span>
-            <button className="btn btn-danger btn-sm float-right mx-3">Eliminar</button>
-            <button className="btn btn-warning btn-sm float-right">Editar</button>
+            <button 
+              className="btn btn-danger btn sm float-right mx-2"
+              onClick={() => deleteTask(task.id)}
+            >
+              Eliminar
+            </button>
+            <button 
+              className="btn btn-warning btn sm float-right">
+              Editar
+              </button>
             </li>
           ))
         }
-        </ul>
+        </ul>}
         </div>
           <div className="col-4">
           <h4 className="text-center">Formulario</h4>
