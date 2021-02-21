@@ -7,29 +7,48 @@ function App() {
   const [tasks, setTasks] = useState([])
   const [editMode, setEditMode] = useState(false)
   const [id, setId] = useState("")
-  const addTask =(e) => {
-    e.preventDefault()
+  const [error, setError] = useState(null)
+
+  const validForm = () => {
+    let isValid = true
+    setError(null)
+
     if (isEmpty(task)) {
-      console.log("Task empty")
+      setError("se debe ingresar una tarea")
+      isValid = false 
+    }
+
+    return isValid
+  }
+
+   const addTask =(e) => {
+    e.preventDefault()
+    if (!validForm()) {
+      return
+    }
+
+
+    if (isEmpty(task)) {
+      setError ("Se debe ingresar una tarea")
       return
     }
    const newTask ={
-     id:shortid.generate(),
+     id: shortid.generate(),
      name: task
      }
 
-      setTasks([...tasks, newTask])
+    setTasks([...tasks, newTask])
     setTask("")
   }
   const saveTask = (e) => {
     e.preventDefault()
-    if (isEmpty(task)) {
-      console.log("Task empty")
+
+    if (!validForm()) {
       return
     }
+   
   
-
-    const editedTasks = tasks.map(item => item.id === id ? { id, name: task } : item) 
+    const editedTasks = tasks.map(item => item.id === id ? { id, name: task} : item)
     setTasks(editedTasks)
     setEditMode(false)
     setTask("")
@@ -43,6 +62,10 @@ function App() {
     setTask(theTask.name)
     setEditMode(true)
     setId(theTask.id)
+
+
+   
+  
 }
 
   return (
@@ -66,7 +89,7 @@ function App() {
             </button>
             <button 
               className="btn btn-warning btn sm float-right"
-              onClick={() => editTask(task.id)}
+              onClick={() => editTask(task)}
             >
               Editar
               </button>
@@ -76,8 +99,12 @@ function App() {
         </ul>
         </div>
           <div className="col-4">
-          <h4 className="text-center">{ editMode ? "Modificar Tarea" : "Agregar Tarea" }</h4>
-          <form onSubmit={ editMode ? saveTask : addTask }>
+          <h4 className="text-center">{ editMode ? "Modificar Tarea" : "Agregar Tarea" }
+          </h4>
+          <form onSubmit={ editMode ? saveTask: addTask }>
+            {
+              error && <span className="text-danger">{error}</span>
+            }
             <input
               type="text"
               className="form-control mb-2"
