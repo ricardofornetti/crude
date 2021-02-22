@@ -105,7 +105,7 @@ function App() {
             >
               Eliminar
             </button>
-            <button 
+            <button
               className="btn btn-warning btn sm float-right"
               onClick={() => editTask(task)}
             >
